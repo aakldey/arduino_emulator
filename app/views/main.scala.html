@@ -44,6 +44,16 @@
 
         <div class="container">
             <br><br><br>
+            @if(flash.contains(Application.FLASH_MESSAGE_KEY)) {
+                <p class="alert alert-success">
+                @flash.get(Application.FLASH_MESSAGE_KEY)
+                </p>
+            }
+            @if(flash.contains(Application.FLASH_ERROR_KEY)) {
+                <p class="alert alert-danger">
+                @flash.get(Application.FLASH_ERROR_KEY)
+                </p>
+            }
             @content
         </div>
 

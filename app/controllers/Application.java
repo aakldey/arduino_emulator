@@ -8,6 +8,8 @@ import play.mvc.*;
 import views.html.*;
 
 public class Application extends Controller {
+    public static String FLASH_ERROR_KEY = "error";
+    public static String FLASH_MESSAGE_KEY = "message";
 
     public static Result index() {
         return redirect(routes.Application.config());

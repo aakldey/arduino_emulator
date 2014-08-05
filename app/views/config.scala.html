@@ -10,7 +10,25 @@
 
     @Messages("config.dlist")
     @if(digitalList.size == 0) {
-        @Messages("config.nodigital")
+        <ul class="list-group">
+            <li class="list-group-item">@Messages("config.nodigital")</li>
+            <li class="list-group-item">
+                <form method="post" action="@routes.Arduino.addDigitalPin()">
+                    <select name="pinNumber">
+                    @for(i <- 1 to 15) {
+                        <option value="@i">@i</option>
+                    }
+                    </select>
+
+                    <select name="value">
+                        <option value="@Arduino.DIGITAL_LOW">@Arduino.DIGITAL_LOW</option>
+                        <option value="@Arduino.DIGITAL_HIGH">@Arduino.DIGITAL_HIGH</option>
+                    </select>
+
+                    <input type="submit" class="btn btn-default" value="@Messages("config.new")">
+                </form>
+            </li>
+        </ul>
     } else {
         <ul class="list-group">
             @for(pin <- digitalList) {
@@ -20,10 +38,66 @@
                                         <option value="@Arduino.DIGITAL_HIGH" @if(pin.pinState == Arduino.DIGITAL_HIGH) { selected } name=@{pin.pinNumber}_@Arduino.DIGITAL_HIGH > @Arduino.DIGITAL_HIGH </option>
                                     </select>
                     <button class="btn-sm btn-primary" onclick="changeDigitalPin('@pin.pinNumber');">@Messages("config.change")</button>
+                    <a href="@routes.Arduino.removeDigitalPin(pin.pinNumber)"><i class="glyphicon glyphicon-remove"></i></a>
                 </li>
             }
             <li class="list-group-item">
-                <button class="btn btn-default">@Messages("config.new")</button>
+                <form method="post" action="@routes.Arduino.addDigitalPin()">
+                    <select name="pinNumber">
+                        @for(i <- 1 to 15) {
+                        <option value="@i">@i</option>
+                        }
+                    </select>
+
+                    <select name="value">
+                        <option value="@Arduino.DIGITAL_LOW">@Arduino.DIGITAL_LOW</option>
+                        <option value="@Arduino.DIGITAL_HIGH">@Arduino.DIGITAL_HIGH</option>
+                    </select>
+
+                    <input type="submit" class="btn btn-default" value="@Messages("config.new")">
+                </form>
+            </li>
+        </ul>
+
+    }
+
+    @Messages("config.alist")
+    @if(analogList.size == 0) {
+        <ul class="list-group">
+            <li class="list-group-item">@Messages("config.nodigital")</li>
+            <li class="list-group-item">
+                <form method="post" action="@routes.Arduino.addAnalogPin()">
+                    <select name="pinNumber">
+                    @for(i <- 1 to 5) {
+                        <option value="@i">@i</option>
+                    }
+                    </select>
+
+                    <input type="submit" class="btn btn-default" value="@Messages("config.new")">
+                </form>
+            </li>
+        </ul>
+
+
+    } else {
+        <ul class="list-group">
+            @for(pin <- analogList) {
+                <li class="list-group-item">
+                    @pin.pinNumber - @pin.pinValue
+                <button class="btn-sm btn-primary">@Messages("config.change")</button>
+                <a href="@routes.Arduino.removeAnalogPin(pin.pinNumber)"><i class="glyphicon glyphicon-remove"></i></a>
+                </li>
+            }
+            <li class="list-group-item">
+                <form method="post" action="@routes.Arduino.addAnalogPin()">
+                    <select name="pinNumber">
+                    @for(i <- 1 to 5) {
+                        <option value="@i">@i</option>
+                    }
+                    </select>
+
+                    <input type="submit" class="btn btn-default" value="@Messages("config.new")">
+                </form>
             </li>
         </ul>
 
