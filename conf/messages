@@ -1,0 +1,11 @@
+application.title = RESTduino emulator
+
+config.title = Configuration
+config.dlist = Connected digital pins:
+config.alist = Connected analog pins:
+config.nodigital = There is no digital pins connected
+config.noanalog = There is no analog pins connected
+config.change = Change value
+config.new = Connect new pin
+config.success = Pin successfully updated
+config.fail = There was an error

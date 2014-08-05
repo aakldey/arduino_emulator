@@ -1,0 +1,31 @@
+@(analogList: List[AnalogPin], digitalList: List[DigitalPin])
+
+@main(Messages("config.title")) {
+    <script src="@routes.Assets.at("js/config.js")"></script>
+
+    <input type="hidden" name="success" value="@Messages("config.success")">
+    <input type="hidden" name="fail" value="@Messages("config.fail")">
+
+    <div class="message"></div>
+
+    @Messages("config.dlist")
+    @if(digitalList.size == 0) {
+        @Messages("config.nodigital")
+    } else {
+        <ul class="list-group">
+            @for(pin <- digitalList) {
+                <li class="list-group-item">
+                    @pin.pinNumber - <select name="digitalPin@pin.pinNumber">
+                                        <option value="@Arduino.DIGITAL_LOW" @if(pin.pinState == Arduino.DIGITAL_LOW ) { selected } name=@{pin.pinNumber}_@Arduino.DIGITAL_LOW> @Arduino.DIGITAL_LOW </option>
+                                        <option value="@Arduino.DIGITAL_HIGH" @if(pin.pinState == Arduino.DIGITAL_HIGH) { selected } name=@{pin.pinNumber}_@Arduino.DIGITAL_HIGH > @Arduino.DIGITAL_HIGH </option>
+                                    </select>
+                    <button class="btn-sm btn-primary" onclick="changeDigitalPin('@pin.pinNumber');">@Messages("config.change")</button>
+                </li>
+            }
+            <li class="list-group-item">
+                <button class="btn btn-default">@Messages("config.new")</button>
+            </li>
+        </ul>
+
+    }
+}
