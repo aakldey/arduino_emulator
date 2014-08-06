@@ -12,3 +12,6 @@ config.fail = There were an error
 config.error.connected = That pin is already connected
 config.added = Pin successfuly added
 config.deleted = Pin successfuly deleted
+config.newanalog.value = Value: 0 - 1023
+config.error.outofrange = Out of range. Should be in 0 - 1023
+config.error.notanumber = Error. Value should be number

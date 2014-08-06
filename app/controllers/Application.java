@@ -19,11 +19,5 @@ public class Application extends Controller {
         return ok(config.render(AnalogPin.find.all(), DigitalPin.find.all()));
     }
 
-    public static Result jsRoutes() {
-        return ok(
-                Routes.javascriptRouter("jsRoutes",
-                        routes.javascript.Arduino.writeDigitalPin())
-                ).as("text/javascript");
-    }
 
 }

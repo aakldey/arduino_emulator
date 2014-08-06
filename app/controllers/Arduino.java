@@ -58,17 +58,24 @@ public class Arduino extends Controller {
         }
     }
 
-    public static Result writeAnalogPin(int pinNumber, int value) {
-        if (value < 0 || value > 1023)
-            return badRequest();
-        AnalogPin pin = AnalogPin.find.where().eq("pinNumber", pinNumber).findUnique();
+    public static Result writeAnalogPin(int pinNumber, String value) {
+        try {
+            int val = Integer.parseInt(value);
 
-        if(pin != null) {
-            pin.pinValue = value;
-            pin.save();
-            return ok(Integer.toString(value));
-        } else {
-            return badRequest();
+            if (val <= 0 || val > 1023)
+                return badRequest((Messages.get("config.error.outofrange")));
+
+            AnalogPin pin = AnalogPin.find.where().eq("pinNumber", pinNumber).findUnique();
+
+            if (pin != null) {
+                pin.pinValue = val;
+                pin.save();
+                return ok(Integer.toString(val));
+            } else {
+                return badRequest(Messages.get("config.error.connected "));
+            }
+        } catch (Exception e) {
+            return badRequest(Messages.get("config.error.notanumber"));
         }
     }
 
@@ -120,7 +127,7 @@ public class Arduino extends Controller {
             }
 
             if (value < 1 || value > 1023) {
-                flash(Application.FLASH_ERROR_KEY, Messages.get("config.fail"));
+                flash(Application.FLASH_ERROR_KEY, Messages.get("config.error.outofrange"));
                 return redirect(routes.Application.config());
             }
 
@@ -134,7 +141,7 @@ public class Arduino extends Controller {
             return redirect(routes.Application.config());
 
         } catch (Exception e) {
-            flash(Application.FLASH_ERROR_KEY, Messages.get("config.fail"));
+            flash(Application.FLASH_ERROR_KEY, Messages.get("config.error.notanumber"));
             return redirect(routes.Application.config());
         }
     }
