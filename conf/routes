@@ -13,6 +13,8 @@ GET         /digital/:pinNumber               controllers.Arduino.readDigitalPin
 GET         /digital/:pinNumber/:value        controllers.Arduino.writeDigitalPin(pinNumber: Int, value: String)
 POST        /config/newdigital                controllers.Arduino.addDigitalPin()
 POST        /config/newanalog                 controllers.Arduino.addAnalogPin()
+POST        /analog/:pinNumber/random         controllers.Arduino.addRandom(pinNumber: Int)
+POST        /analog/:pinNumber/random/remove  controllers.Arduino.removeRandom(pinNumber: Int)
 
 
 

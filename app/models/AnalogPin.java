@@ -21,4 +21,6 @@ public class AnalogPin extends Model {
 
     public int pinValue = 0;
 
+    public boolean generated = false;
+
 }

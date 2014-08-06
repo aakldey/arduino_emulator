@@ -7,6 +7,7 @@ create table analog_pin (
   id                        bigint auto_increment not null,
   pin_number                integer,
   pin_value                 integer,
+  generated                 tinyint(1) default 0,
   constraint pk_analog_pin primary key (id))
 ;
 

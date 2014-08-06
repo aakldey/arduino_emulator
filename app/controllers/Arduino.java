@@ -1,22 +1,38 @@
 package controllers;
 
+import akka.actor.ActorRef;
+import akka.actor.Cancellable;
+import akka.actor.Props;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import jobs.RandomAnalogActor;
 import models.AnalogPin;
 import models.DigitalPin;
+import models.RandomAnalog;
 import play.*;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.i18n.Messages;
+import play.libs.Akka;
 import play.mvc.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import scala.concurrent.duration.*;
 import views.html.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import play.libs.Json;
+
+import java.util.concurrent.TimeUnit;
 
 public class Arduino extends Controller {
 
     public static String DIGITAL_HIGH = "HIGH";
     public static String DIGITAL_LOW = "LOW";
+
+    private static Map<AnalogPin, Cancellable> jobs = new HashMap<>();
 
     public static Result index() {
         return redirect(routes.Application.config());
@@ -167,6 +183,61 @@ public class Arduino extends Controller {
         AnalogPin.find.where().eq("pinNumber", pinNumber).findUnique().delete();
 
         flash(Application.FLASH_MESSAGE_KEY, Messages.get("config.deleted"));
+        return redirect(routes.Application.config());
+    }
+
+    public static Result addRandom(int pinNumber) {
+        try {
+            DynamicForm form = Form.form().bindFromRequest();
+            int timeInterval = Integer.parseInt(form.get("time"));
+            int randStart = Integer.parseInt(form.get("randomStart"));
+            int randEnd = Integer.parseInt(form.get("randomEnd"));
+
+            AnalogPin pin = AnalogPin.find.where().eq("pinNumber", pinNumber).findUnique();
+
+            if (pin != null) {
+
+                pin.generated = true;
+                pin.save();
+
+                RandomAnalog rand = new RandomAnalog(pin.pinNumber, randStart, randEnd);
+
+                ActorRef jobactor = Akka.system().actorOf(Props.create(RandomAnalogActor.class), "pin"+pin.pinNumber);
+                Cancellable tick = Akka.system().scheduler().schedule(
+                        Duration.create(0, TimeUnit.SECONDS),
+                        Duration.create(timeInterval, TimeUnit.SECONDS),
+                        jobactor,
+                        rand,
+                        Akka.system().dispatcher(),
+                        null
+                );
+
+                jobs.put(pin, tick);
+
+                flash(Application.FLASH_MESSAGE_KEY, Messages.get("config.success"));
+                return redirect(routes.Application.config());
+            } else {
+                flash(Application.FLASH_ERROR_KEY, Messages.get("config.error.nopin"));
+                return redirect(routes.Application.config());
+            }
+
+        } catch (Exception e) {
+            flash(Application.FLASH_ERROR_KEY, Messages.get("config.fail"));
+            return redirect(routes.Application.config());
+        }
+    }
+
+    public static Result removeRandom(int pinNumber) {
+        AnalogPin pin = AnalogPin.find.where().eq("pinNumber", pinNumber).findUnique();
+
+        if (jobs.containsKey(pin)) {
+            jobs.get(pin).cancel();
+            jobs.remove(pin);
+            pin.generated = false;
+            pin.save();
+        }
+
+        flash(Application.FLASH_MESSAGE_KEY, Messages.get("config.success"));
         return redirect(routes.Application.config());
     }
 

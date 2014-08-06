@@ -84,8 +84,49 @@
             @for(pin <- analogList) {
                 <li class="list-group-item">
                     @pin.pinNumber - <input type="text" value="@pin.pinValue" name="analogPin@pin.pinNumber"/>
-                <button class="btn-sm btn-primary" onclick="changeAnalogPin('@pin.pinNumber');">@Messages("config.change")</button>
-                <a href="@routes.Arduino.removeAnalogPin(pin.pinNumber)"><i class="glyphicon glyphicon-remove"></i></a>
+                    <button class="btn-sm btn-primary" onclick="changeAnalogPin('@pin.pinNumber');">@Messages("config.change")</button>
+                    <a href="@routes.Arduino.removeAnalogPin(pin.pinNumber)"><i class="glyphicon glyphicon-remove"></i></a>
+                    @if(!pin.generated) {
+                            <!-- Button trigger modal -->
+                        <button class="btn-sm btn-default" name="random@pin.pinNumber" data-toggle="modal" data-target="#myModal@pin.pinNumber">
+                            @Messages("config.random")</button>
+                        </button>
+
+                            <!-- Modal -->
+                        <div class="modal fade" id="myModal@pin.pinNumber" tabindex="-1" role="dialog" aria-labelledby="myModalLabel@pin.pinNumber" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form method="post" action="@routes.Arduino.addRandom(pin.pinNumber)">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                            <h4 class="modal-title" id="myModalLabel@pin.pinNumber">@Messages("config.random.title",pin.pinNumber)</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h5>@Messages("config.random.body")</h5>
+
+                                                <p>@Messages("config.random.interval")</p>
+                                                <input type="text" pattern="[0-9]*" name="time" value="10"/><br><br>
+                                                <p>@Messages("config.random.range")</p>
+                                                <input type="text" pattern="[0-9]*" name="randomStart" value="0"/>
+                                                <input type="text" pattern="[0-9]*" name="randomEnd" value="1023"/>
+
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <input type="submit" class="btn btn-primary" value="@Messages("config.ok")"/>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    } else {
+                        <form method="post" action="@routes.Arduino.removeRandom(pin.pinNumber)" style="display:inline-block;">
+                            <input type="submit" class="btn-sm btn-success"  name="random@pin.pinNumber" value="@Messages("config.random.remove")"/>
+                        </form>
+
+                    }
                 </li>
             }
             <li class="list-group-item">
