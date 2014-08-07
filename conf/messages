@@ -1,6 +1,7 @@
 application.title = RESTduino emulator
 
 login.signin = Sign in
+login.signout = Sign out
 login.username = Enter your username
 login.password = Enter your password
 login.success = Signed in, username - {0}
@@ -8,6 +9,7 @@ login.error.wrong = Wrong password or username
 
 # for login form
 error.required = {0} field is required
+error.unauthorized = You need to sign in to view this page
 
 config.title = Configuration
 config.dlist = Connected digital pins:

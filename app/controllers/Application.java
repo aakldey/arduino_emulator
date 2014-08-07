@@ -5,6 +5,7 @@ import models.DigitalPin;
 import models.User;
 import org.apache.commons.lang3.text.WordUtils;
 import play.*;
+import play.api.mvc.Session;
 import play.data.Form;
 import play.data.validation.ValidationError;
 import play.i18n.Messages;
@@ -21,10 +22,12 @@ public class Application extends Controller {
     public static String FLASH_ERROR_KEY = "error";
     public static String FLASH_MESSAGE_KEY = "message";
 
+    @Security.Authenticated(Secured.class)
     public static Result index() {
         return redirect(routes.Application.config());
     }
 
+    @Security.Authenticated(Secured.class)
     public static Result config() {
         return ok(config.render(AnalogPin.find.all(), DigitalPin.find.all()));
     }
@@ -58,6 +61,19 @@ public class Application extends Controller {
             }
         }
         return TODO;
+    }
+
+    @Security.Authenticated(Secured.class)
+    public static Result logout() {
+        session().remove("username");
+        return redirect(routes.Application.login());
+    }
+
+    public static User getLocalUser(play.mvc.Http.Session session) {
+        if (session.get("username") != null) {
+            return User.find.where().eq("username", session.get("username")).findUnique();
+        } else
+            return null;
     }
 
     public static String md5(String md5) {
