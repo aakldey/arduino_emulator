@@ -1,0 +1,25 @@
+@(form: Form[models.User.LoginForm])
+
+@main(Messages("login.signin")) {
+
+    <br><br>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h5 align="center"><i class="glyphicon glyphicon-user"></i> @Messages("login.signin")</h5>
+                </div>
+                <div class="panel-body">
+                    <form method="post" action="@routes.Application.doLogin()">
+                        <input type="text" class="form-control" name="username" placeholder="@Messages("login.username")"/><br>
+                        <input type="password" class="form-control" name="password" placeholder="@Messages("login.password")"/><br>
+                        <input type="submit" value="@Messages("login.signin")" class="form-control btn btn-success">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+
+}

@@ -4,6 +4,8 @@
 
 # Home page
 GET         /                                       controllers.Application.index()
+GET         /login                                  controllers.Application.login()
+POST        /login                                  controllers.Application.doLogin()
 GET         /config                                 controllers.Application.config()
 GET         /digital/:pinNumber/delete              controllers.Arduino.removeDigitalPin(pinNumber: Int)
 GET         /analog/:pinNumber/delete               controllers.Arduino.removeAnalogPin(pinNumber: Int)

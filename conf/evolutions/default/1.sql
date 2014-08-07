@@ -18,6 +18,13 @@ create table digital_pin (
   constraint pk_digital_pin primary key (id))
 ;
 
+create table user (
+  id                        bigint auto_increment not null,
+  username                  varchar(255),
+  password                  varchar(255),
+  constraint pk_user primary key (id))
+;
+
 
 
 
@@ -28,6 +35,8 @@ SET FOREIGN_KEY_CHECKS=0;
 drop table analog_pin;
 
 drop table digital_pin;
+
+drop table user;
 
 SET FOREIGN_KEY_CHECKS=1;
 

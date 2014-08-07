@@ -37,7 +37,8 @@
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="@routes.Application.config()">@Messages("config.title")</a></li>
+                        <li @if(title.equals(Messages("config.title"))){class="active"}><a href="@routes.Application.config()">@Messages("config.title")</a></li>
+                        <li @if(title.equals(Messages("login.signin"))){class="active"}><a href="@routes.Application.login()">@Messages("login.signin")</a></li>
                     </ul>
                 </div><!-- /.nav-collapse -->
             </div><!-- /.container -->
@@ -47,12 +48,12 @@
             <br><br><br>
             @if(flash.contains(Application.FLASH_MESSAGE_KEY)) {
                 <p class="alert alert-success">
-                @flash.get(Application.FLASH_MESSAGE_KEY)
+                @flash.get(Application.FLASH_MESSAGE_KEY).replace("\n", "<br>")
                 </p>
             }
             @if(flash.contains(Application.FLASH_ERROR_KEY)) {
-                <p class="alert alert-danger">
-                @flash.get(Application.FLASH_ERROR_KEY)
+                <p class="alert alert-danger" align="center">
+                @Html(flash.get(Application.FLASH_ERROR_KEY))
                 </p>
             }
             @content
