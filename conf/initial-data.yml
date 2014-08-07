@@ -1,0 +1,27 @@
+- !!models.User
+    username:    admin
+    password:    202cb962ac59075b964b07152d234b70
+
+- !!models.DigitalPin
+    pinNumber:   1
+    pinState:    LOW
+
+- !!models.DigitalPin
+    pinNumber:   2
+    pinState:    HIGH
+
+- !!models.DigitalPin
+    pinNumber:   3
+    pinState:    HIGH
+
+- !!models.AnalogPin
+    pinNumber:   1
+    pinValue:    300
+
+- !!models.AnalogPin
+    pinNumber:   2
+    pinValue:    320
+
+- !!models.AnalogPin
+    pinNumber:   3
+    pinValue:    420
