@@ -241,4 +241,17 @@ public class Arduino extends Controller {
         return redirect(routes.Application.config());
     }
 
+    public static Result getList() {
+        ObjectNode result = Json.newObject();
+
+        JsonNode digital = Json.toJson(DigitalPin.find.all());
+        JsonNode analog = Json.toJson(AnalogPin.find.all());
+
+
+        result.put("digital", digital);
+        result.put("analog", analog);
+
+        return ok(result);
+    }
+
 }

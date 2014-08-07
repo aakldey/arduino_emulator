@@ -42,3 +42,39 @@ function changeAnalogPin(pinNumber) {
         }
     });
 }
+
+function updateValues() {
+    $.ajax({
+        type: 'GET',
+        url: '/list',
+        success: function (msg) {
+           // console.log($.evalJSON(msg));
+            //console.log(msg);
+            var on = $('input[name=pinStateOn]').val();
+            var off = $('input[name=pinStateOff]').val();
+
+            msg.digital.forEach(function (element, index, array) {
+                $('span[name=digital'+element.pinNumber+']').html(element.pinState);
+                if (element.pinState == on) {
+                    $('span[name=digital'+element.pinNumber+']').attr('class','label label-success');
+                } else {
+                    $('span[name=digital'+element.pinNumber+']').attr('class','label label-danger');
+                }
+
+            });
+
+            msg.analog.forEach(function (element, index, array) {
+                $('span[name=analog'+element.pinNumber+']').html(element.pinValue);
+
+            })
+         //   console.log(json);
+        },
+        error: function (msg) {
+
+        }
+    });
+}
+
+$(document).ready(function() {
+    setInterval(updateValues, 500);
+});

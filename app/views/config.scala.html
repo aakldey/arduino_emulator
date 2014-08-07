@@ -30,10 +30,13 @@
             </li>
         </ul>
     } else {
+        <input type="hidden" name="pinStateOn" value="@Arduino.DIGITAL_HIGH">
+        <input type="hidden" name="pinStateOff" value="@Arduino.DIGITAL_LOW">
+
         <ul class="list-group">
             @for(pin <- digitalList) {
                 <li class="list-group-item">
-                    @pin.pinNumber - <select name="digitalPin@pin.pinNumber">
+                    @pin.pinNumber - <span name="digital@{pin.pinNumber}" @if(pin.pinState == Arduino.DIGITAL_LOW) {class="label label-danger"} else { class="label label-success" }>@pin.pinState</span> <select name="digitalPin@pin.pinNumber">
                                         <option value="@Arduino.DIGITAL_LOW" @if(pin.pinState == Arduino.DIGITAL_LOW ) { selected } name=@{pin.pinNumber}_@Arduino.DIGITAL_LOW> @Arduino.DIGITAL_LOW </option>
                                         <option value="@Arduino.DIGITAL_HIGH" @if(pin.pinState == Arduino.DIGITAL_HIGH) { selected } name=@{pin.pinNumber}_@Arduino.DIGITAL_HIGH > @Arduino.DIGITAL_HIGH </option>
                                     </select>
@@ -83,7 +86,7 @@
         <ul class="list-group">
             @for(pin <- analogList) {
                 <li class="list-group-item">
-                    @pin.pinNumber - <input type="text" value="@pin.pinValue" name="analogPin@pin.pinNumber"/>
+                    @pin.pinNumber - <span class="label label-warning" name="analog@pin.pinNumber">@pin.pinValue</span> <input type="text" value="@pin.pinValue" name="analogPin@pin.pinNumber"/>
                     <button class="btn-sm btn-primary" onclick="changeAnalogPin('@pin.pinNumber');">@Messages("config.change")</button>
                     <a href="@routes.Arduino.removeAnalogPin(pin.pinNumber)"><i class="glyphicon glyphicon-remove"></i></a>
                     @if(!pin.generated) {

@@ -3,20 +3,21 @@
 # ~~~~
 
 # Home page
-GET         /                                 controllers.Application.index()
-GET         /config                           controllers.Application.config()
-GET         /digital/:pinNumber/delete        controllers.Arduino.removeDigitalPin(pinNumber: Int)
-GET         /analog/:pinNumber/delete         controllers.Arduino.removeAnalogPin(pinNumber: Int)
-GET         /analog/:pinNumber                controllers.Arduino.readAnalogPin(pinNumber: Int)
-GET         /analog/:pinNumber/:value         controllers.Arduino.writeAnalogPin(pinNumber: Int, value: String)
-GET         /digital/:pinNumber               controllers.Arduino.readDigitalPin(pinNumber: Int)
-GET         /digital/:pinNumber/:value        controllers.Arduino.writeDigitalPin(pinNumber: Int, value: String)
-POST        /config/newdigital                controllers.Arduino.addDigitalPin()
-POST        /config/newanalog                 controllers.Arduino.addAnalogPin()
-POST        /analog/:pinNumber/random         controllers.Arduino.addRandom(pinNumber: Int)
-POST        /analog/:pinNumber/random/remove  controllers.Arduino.removeRandom(pinNumber: Int)
+GET         /                                       controllers.Application.index()
+GET         /config                                 controllers.Application.config()
+GET         /digital/:pinNumber/delete              controllers.Arduino.removeDigitalPin(pinNumber: Int)
+GET         /analog/:pinNumber/delete               controllers.Arduino.removeAnalogPin(pinNumber: Int)
+GET         /analog/:pinNumber                      controllers.Arduino.readAnalogPin(pinNumber: Int)
+GET         /analog/:pinNumber/:value               controllers.Arduino.writeAnalogPin(pinNumber: Int, value: String)
+GET         /digital/:pinNumber                     controllers.Arduino.readDigitalPin(pinNumber: Int)
+GET         /digital/:pinNumber/:value              controllers.Arduino.writeDigitalPin(pinNumber: Int, value: String)
+POST        /config/newdigital                      controllers.Arduino.addDigitalPin()
+POST        /config/newanalog                       controllers.Arduino.addAnalogPin()
+POST        /analog/:pinNumber/random               controllers.Arduino.addRandom(pinNumber: Int)
+POST        /analog/:pinNumber/random/remove        controllers.Arduino.removeRandom(pinNumber: Int)
+GET         /list                                   controllers.Arduino.getList()
 
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file                     controllers.Assets.at(path="/public", file)
+GET         /assets/*file                           controllers.Assets.at(path="/public", file)
