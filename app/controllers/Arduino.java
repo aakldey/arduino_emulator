@@ -67,7 +67,7 @@ public class Arduino extends Controller {
         ObjectNode result = Json.newObject();
         AnalogPin pin = AnalogPin.find.where().eq("pinNumber", pinNumber).findUnique();
         if(pin != null) {
-            result.put("a"+pinNumber, pin.pinValue);
+            result.put(Integer.toString(pinNumber), pin.pinValue);
             return ok(result);
         } else {
             return badRequest();
